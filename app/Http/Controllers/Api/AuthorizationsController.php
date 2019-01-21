@@ -58,7 +58,7 @@ class AuthorizationsController extends Controller
                 break;
         }
 
-        $token = Auth::guard('api')->fromUser($user);
+        $token = \Auth::guard('api')->fromUser($user);
 
         return $this->respondWithToken($token)->setStatusCode(201);
     }
@@ -78,6 +78,18 @@ class AuthorizationsController extends Controller
         }
 
         return $this->respondWithToken($token)->setStatusCode(201);
+    }
+
+    public function update()
+    {
+        $token = \Auth::guard('api')->refresh();
+        return $this->respondWithToken($token);
+    }
+
+    public function destroy()
+    {
+        \Auth::guard('api')->logout();
+        return $this->response->noContent();
     }
 
 
