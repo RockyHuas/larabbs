@@ -23,7 +23,7 @@ trait LastActivedAtHelper
         $now = Carbon::now()->toDateTimeString();
 
         // 数据写入 Redis ，字段已存在会被更新
-        Redis::hSet($hash, $field, $now);
+        app('redis')->hSet($hash, $field, $now);
     }
 
     public function syncUserActivedAt()
@@ -32,7 +32,7 @@ trait LastActivedAtHelper
         $hash = $this->getHashFromDateString(Carbon::now()->subDay()->toDateString());
 
         // 从 Redis 中获取所有哈希表里的数据
-        $dates = Redis::hGetAll($hash);
+        $dates = app('redis')->hGetAll($hash);
 
         // 遍历，并同步到数据库中
         foreach ($dates as $user_id => $actived_at) {
@@ -47,7 +47,7 @@ trait LastActivedAtHelper
         }
 
         // 以数据库为中心的存储，既已同步，即可删除
-        Redis::del($hash);
+        app('redis')->del($hash);
     }
 
     public function getLastActivedAtAttribute($value)
@@ -59,7 +59,7 @@ trait LastActivedAtHelper
         $field = $this->getHashField();
 
         // 三元运算符，优先选择 Redis 的数据，否则使用数据库中
-        $datetime = Redis::hGet($hash, $field) ? : $value;
+        $datetime = app('redis')->hGet($hash, $field) ? : $value;
 
         // 如果存在的话，返回时间对应的 Carbon 实体
         if ($datetime) {

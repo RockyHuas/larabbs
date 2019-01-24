@@ -9,6 +9,7 @@
   "type": "project",
   "require": {
     "php": ">=7.0.0",
+    "barryvdh/laravel-ide-helper": "^2.5",
     "dingo/api": "^2.0.0-alpha2",
     "doctrine/dbal": "^2.9",
     "fideloper/proxy": "~4.0",
@@ -19,6 +20,7 @@
     "laravel/framework": "5.7.*",
     "laravel/horizon": "~1.0",
     "laravel/tinker": "~1.0",
+    "liyu/dingo-serializer-switch": "^0.3.1",
     "mews/captcha": "~2.0",
     "mews/purifier": "~2.0",
     "overtrue/easy-sms": "^1.1",
@@ -32,7 +34,7 @@
     "viacreative/sudo-su": "~1.1"
   },
   "require-dev": {
-    "barryvdh/laravel-debugbar": "~3.1",
+    "barryvdh/laravel-debugbar": "^3.2",
     "filp/whoops": "~2.0",
     "fzaninotto/faker": "~1.4",
     "mockery/mockery": "0.9.*",
@@ -69,6 +71,11 @@
     "post-autoload-dump": [
       "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
       "@php artisan package:discover"
+    ],
+    "post-update-cmd": [
+      "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+      "php artisan ide-helper:generate",
+      "php artisan ide-helper:meta"
     ]
   },
   "config": {
