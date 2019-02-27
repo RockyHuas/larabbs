@@ -14,5 +14,6 @@ class Policy
         if ($user->can('manage_contents')) {
             return true;
         }
+
     }
 }

@@ -10,7 +10,7 @@ class UserTransformer extends TransformerAbstract
     private $append_data = [];
 
     protected $availableIncludes=[
-        'topics'
+        'topics','roles'
     ];
 
 
@@ -42,6 +42,11 @@ class UserTransformer extends TransformerAbstract
         $topics = $user->topics;
 
         return $this->collection($topics, new TopicTransformer);
+    }
+
+    public function includeRoles(User $user)
+    {
+        return $this->collection($user->roles, new RoleTransformer());
     }
 
 }

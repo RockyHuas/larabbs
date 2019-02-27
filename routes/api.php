@@ -17,7 +17,7 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', [
     'namespace' => 'App\Http\Controllers\Api',
-    'middleware' => ['serializer:array','bindings']
+    'middleware' => ['serializer:array','bindings','change-locale']
 ], function ($api) {
 
     $api->group([
@@ -54,6 +54,14 @@ $api->version('v1', [
 
         $api->get('categories', 'CategoriesController@index')
             ->name('api.categories.index');
+
+        // 资源推荐
+        $api->get('links', 'LinksController@index')
+            ->name('api.links.index');
+
+        // 活跃用户
+        $api->get('actived/users', 'UsersController@activedIndex')
+            ->name('api.actived.users.index');
 
         // 需要 token 验证的接口
         $api->group(['middleware' => 'api.auth'], function($api) {
@@ -114,6 +122,12 @@ $api->version('v1', [
             // 标记消息通知为已读
             $api->patch('user/read/notifications', 'NotificationsController@read')
                 ->name('api.user.notifications.read');
+
+            // 当前登录用户权限
+            $api->get('user/permissions', 'PermissionsController@index')
+                ->name('api.user.permissions.index');
+
+
 
         });
 
